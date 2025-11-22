@@ -1,0 +1,50 @@
+name: Content Automation Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      SELF_TEST:
+        description: "Run in self-test mode"
+        required: false
+        default: "false"
+      DRY_RUN:
+        description: "Dry run mode (don't publish)"
+        required: false
+        default: "true"
+      PLATFORM:
+        description: "Platform to publish to (twitter/linkedin/instagram/youtube/all)"
+        required: false
+        default: "twitter"
+
+jobs:
+  run_pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+
+          SELF_TEST: ${{ github.event.inputs.SELF_TEST }}
+          DRY_RUN: ${{ github.event.inputs.DRY_RUN }}
+          PLATFORM: ${{ github.event.inputs.PLATFORM }}
+        run: |
+          python run_pipeline.py
