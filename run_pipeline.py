@@ -3,10 +3,10 @@ import json
 import sys
 from datetime import datetime
 
-from content_generator import generate_trending_content
-from image_generator import generate_image
-from video_generator import generate_video
-from publisher_twitter import publish_to_twitter
+from scripts.content_generator import generate_trending_content
+from scripts.image_generator import generate_image
+from scripts.video_generator import generate_video
+from scripts.publisher_twitter import publish_to_twitter
 
 LOG_FILE = "pipeline_log.txt"
 
