@@ -1,0 +1,8 @@
+requests
+Pillow
+ffmpeg-python
+moviepy
+python-dotenv
+google-auth
+google-auth-oauthlib
+google-api-python-client
